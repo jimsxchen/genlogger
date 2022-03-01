@@ -3,10 +3,10 @@ from logging.handlers import *
 import os
 import queue
 
-def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*100, rotate_num=1, /
-                host="localhost", port="51000", /
-                mailhost=None, fromaddr=None, toaddrs=None, subject=None, /
-                url=None, /
+def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*100, rotate_num=1, 
+                host="localhost", port="51000", 
+                mailhost=None, fromaddr=None, toaddrs=None, subject=None, 
+                url=None, 
                 queue:queue=None):
 
     # sanity check
