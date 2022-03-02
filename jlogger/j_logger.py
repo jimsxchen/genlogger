@@ -3,7 +3,7 @@ from logging.handlers import *
 import os
 import queue
 
-def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*100, rotate_num=1, 
+def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50, rotate_num=1, 
                 host="localhost", port="51000", 
                 mailhost=None, fromaddr=None, toaddrs=None, subject=None, 
                 url=None, 
@@ -49,7 +49,7 @@ def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_
     else:
         file_handler = logging.StreamHandler()
 
-    formatter = logging.Formatter("%(asctime)s — %(name)s — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
+    formatter = logging.Formatter("%(asctime)s — %(filename)s — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
     file_handler.setFormatter(formatter)
     root_logger.addHandler(file_handler)
             
