@@ -28,53 +28,61 @@ This module provides a single function (set_logger) to wrap up the nitty-gritty 
 Assuming an application package has the following structure:
 
 my_app/
-    __init__.py
-    main_app.py
-    submodules/
+
         __init__.py
-        module1.py
-        module2.py
-    test/
-        unittest.py
+        main_app.py
+        submodules/
+            __init__.py
+            module1.py
+            module2.py
+        test/
+            unittest.py
 
 In the main_app.py 
 
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
+
 import logging
+
 from jlogger.j_logger import set_logger
+
 logger = logging.getLogger(__name__)
 
 ......
 
-if __name__ == '__main__':
+if \_\_name__ == '\_\_main__':
+
     ......
     set_logger("main_app.log")     
     logger.info("*** Main app started ***")
     ......
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
 
 In submodules module1.py and module2.py
 
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
+
 import logging   
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(\_\_name__)
 
     ......
     logger.info(f"Raw data received.")
     ......
     logger.warning(f"Temperature too high.")
     ......
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
 
 
 - Explanation
 
 In the main_app, it sets up a root logger and logs all messages (including the submodules) to the "main_app.log" file. Different module will have its own name in the log message. The logged message format looks like below:
 
-         date time        module name   func:line No.   level   message
+         date time   module name   func:line No. level   message
 --------------------------------------------------------------------------------------------------------
 2022-03-03 14:43:25,926 — main_app.py — main_loop:153 — INFO — Waiting for communication to be connected.
+
 ......
+
 2022-03-03 14:43:26,014 — module1.py — start:130 — DEBUG — Opening serial connection successfully.
 
 
@@ -92,12 +100,14 @@ The set_logger function can be called many times to set up different handlers as
 - The prototype:
 
 def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50, rotate_num=1, 
+
                 host="localhost", port="51000", 
                 mailhost=None, fromaddr=None, toaddrs=None, subject=None, 
                 url=None, 
                 queue:queue=None):
 
 Where:
+
     :param file_name: the logger file name from the app 
     :param handler: the type of the handler. default to rotatingfile. It can also be:
                 timedrotatingfile, watchedfile, socket, datagram
@@ -131,23 +141,29 @@ It takes care of the time expiration check according to the specified interval. 
 
 - Example:
 
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
+
 import logging   
 from jlogger.j_heartbeat import HeartbeatLog   
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(\_\_name__)
 
 ......
+
 heartbeat = HeartbeatLog("my_module", "5")
+
 while True:
+
     ......
     heartbeat.log(logger)
 
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
 
 - The class prototype
 
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
+
 class HeartbeatLog:
+
     def __init__(self, name, interval_env:str):
         """ constructor
         :param name: The forever module name passed from app
@@ -159,4 +175,4 @@ class HeartbeatLog:
         :param logger: The underlying logger. If this is None, it won't log.
         Note, if interval value is 0, it won't log.
         """
-<---------------------------------------------->
+<--------------------------------------------------------------------------------------------->
