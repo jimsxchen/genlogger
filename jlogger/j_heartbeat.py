@@ -32,7 +32,7 @@ class HeartbeatLog:
         :param interval_env: interval for the heartbeat log
         """
         assert interval_env == None or isinstance(interval_env, str), "interval_env has to be either None or a string!"
-        
+
         self._name = name
         if interval_env is not None and interval_env.isdigit():     # Note, interval_env must be positive integer number!
             self._interval_val = int(interval_env)
@@ -41,9 +41,11 @@ class HeartbeatLog:
         self._start_time = None
 
 
-    def log(self, logger:logging.Logger = None):
+    def log(self, logger:logging.Logger = None, message = None, replace = False):
         """ log function
         :param logger: The underlying logger. If this is None, it won't log.
+        :param message: customised log message to attach or replace depending on the replace setting
+        :param replace: replace the default message with customised one if set to True   
         Note, if interval value is 0, it won't log.
         """
         if self._interval_val == 0:
@@ -57,7 +59,12 @@ class HeartbeatLog:
             ori_fmtter = logger.root.handlers[0].formatter
             new_fmtter = logging.Formatter("%(asctime)s — " + self._name + " — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
             logger.root.handlers[0].setFormatter(new_fmtter)
-            logger.info(f'Heart beat ----- alive. Logged every {self._interval_val} seconds.')
+            if replace and message:
+                logger.info(message)
+            elif message: 
+                logger.info(f'Heart beat ----- alive. Logged every {self._interval_val} seconds. {message}')
+            else:
+                logger.info(f'Heart beat ----- alive. Logged every {self._interval_val} seconds.')
             logger.root.handlers[0].setFormatter(ori_fmtter)               
             self._start_time = curr_time
 

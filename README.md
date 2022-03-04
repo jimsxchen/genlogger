@@ -83,7 +83,7 @@ In the main_app, it sets up a root logger and logs all messages (including the s
 
 The default root logger level is set to "DEBUG", rotating file handler, maximum file size is 5MB, the default rotating file number (rotate_num) is 1. All these settings can be changed by passing the name/value pairs. See below prototype for more details. 
 
-When the live log file reaches 5MB, it saves it to a backup file the same name as the live one but with suffix of ".1". When the live log reaches 5MB again it overwrites (replaces) the backup file so on so the log file size is capped to maximum 2*5MB.
+When the live log file reaches 5MB, it saves it to a backup file the same name as the live one but with suffix of ".1". When the live log reaches 5MB again it overwrites (replaces) the backup file and so on so the log file size is capped to maximum 2*5MB.
 
 If the user wants different logging level for submodules, can set this in the main_app after the set_logger call. Example:
 
@@ -152,6 +152,8 @@ while True:
     heartbeat.log(logger)
 ```
 
+Note, the heartbeat.log function has two extra arguments, "message" and "replace" (see prototype below). "message" default value is None. "replace" default is False. If "message" is not None, the log will either append (replace=False) the message to the pre-defined log message or replace (replace=True) the pre-defined according to the replace setting.
+
 - The class prototype
 
 
@@ -163,9 +165,11 @@ class HeartbeatLog:
         :param interval_env: interval for the heartbeat log (must be a string). When it is set to 0, it won't log the heartbeat.
         """
 
-    def log(self, logger:logging.Logger = None):
+    def log(self, logger:logging.Logger = None, message = None, replace = False):
         """ log function
         :param logger: The underlying logger. If this is None, it won't log.
+        :param message: customised log message to attach or replace depending on the replace setting
+        :param replace: replace the default message with customised one if set to True       
         Note, if interval value is 0, it won't log.
         """
 ```
