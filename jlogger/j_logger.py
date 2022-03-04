@@ -1,8 +1,51 @@
+# The MIT License (MIT)
+# Copyright (c) 2022 Jim S Chen
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+
 import logging
 from logging.handlers import *
 import os
 import queue
 
+
+""" Set up logger with a handler (default to rotating) as root logger
+:param file_name: the logger file name from the app 
+:param handler: the type of the handler. default to rotatingfile. It can also be:
+                timedrotatingfile, watchedfile, socket, datagram
+                syslog, smtp, http, buffering, memory, queue
+                Note: each type has different argument set and has to be provided properly 
+:param level: The logging level for the root logger. Value needs to be in ["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"]
+                If the specified is not in the list, INFO is the default
+:param max_size: This argument is for rotating logs to specify the maximum log size. In mega byte.
+:param rotate_num: For rotating logs only. It specifies how many backup file needed. The value has to be
+                at least 1 to work with rotation
+:param host: For socket, datagram, http types of logger to specify the host name or IP address 
+:param port: For socket, datagram, http types of logger to specify the port number
+:param mailhost: For smtp type to set up the mail server
+:param fromaddr: For smtp type to set up the mail sender address
+:param toaddrs: For smtp type to set up the mail recipient address
+:param subject: For smtp type to set up the mail subject
+:param url: For http handler to specify the website url
+:param queue: For queue handler to pass a queue object
+"""
 def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50, rotate_num=1, 
                 host="localhost", port="51000", 
                 mailhost=None, fromaddr=None, toaddrs=None, subject=None, 
