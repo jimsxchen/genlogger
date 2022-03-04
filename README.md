@@ -1,10 +1,10 @@
 Introduction
 ============
-jlogger package has two modules: j_logger and j_heartbeat.
+Setting up logging in python application can be quite tedious and complex. This library provides an easy way to set up for application within the package for all main app and submodules. It has two modules: j_logger and j_heartbeat.
 
-j_logger is a generic package for properly setting up the loggers for application (with app main and sub-modules) in a hierachy way to present better information as per the message source, file name, time and the code line in file.  
+j_logger is a generic module for setting up the loggers for the whole application (including both main app and sub-modules) in a hierachy way. It simplifies the setup and logs the message with full information such as date time in iso format, module name, function name and line number, and logging level of the calling module.  
 
-j_heartbeat provides a heartbeat logging for any forever loop, either process or thread.
+j_heartbeat provides a heartbeat logging for any forever loop, either process or thread to present a keep alive message in the log. The heartbeat rate is user configurable.
 
 
 Installation Instructions
