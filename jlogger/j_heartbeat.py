@@ -37,7 +37,7 @@ class HeartbeatLog:
         if interval_env is not None and interval_env.isdigit():     # Note, interval_env must be positive integer number!
             self._interval_val = int(interval_env)
         else:
-            self._interval_val = 1
+            self._interval_val = 0
         self._start_time = None
 
 
