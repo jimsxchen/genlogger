@@ -37,6 +37,8 @@ import queue
 :param max_size: This argument is for rotating logs to specify the maximum log size. In mega byte.
 :param rotate_num: For rotating logs only. It specifies how many backup file needed. The value has to be
                 at least 1 to work with rotation
+:param logger_name: named logger if provided, otherwise set up the root logger
+:param propogate: decide whether the logger can propogate to ancestors 
 :param host: For socket, datagram, http types of logger to specify the host name or IP address 
 :param port: For socket, datagram, http types of logger to specify the port number
 :param mailhost: For smtp type to set up the mail server
@@ -46,7 +48,8 @@ import queue
 :param url: For http handler to specify the website url
 :param queue: For queue handler to pass a queue object
 """
-def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50, rotate_num=1, 
+def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50, 
+                rotate_num=1, logger_name=None, propogate=True,
                 host="localhost", port="51000", 
                 mailhost=None, fromaddr=None, toaddrs=None, subject=None, 
                 url=None, 
@@ -62,9 +65,13 @@ def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_
             os.makedirs(os.path.dirname(file_name), exist_ok=True)
     
     # configure the root logger
-    root_logger = logging.getLogger()
+    if logger_name is not None:
+        logger = logging.getLogger(logger_name)                     # configure named logger
+    else:
+        logger = logging.getLogger()                                # configure root logger
     log_level = getattr(logging, level.upper(), logging.INFO)
-    root_logger.setLevel(log_level) 
+    logger.setLevel(log_level) 
+    logger.propagate = propogate
 
     # sort out the handler
     if handler.lower() == "rotatingfile": 
@@ -91,11 +98,14 @@ def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_
         file_handler = QueueHandler(queue)
     else:
         file_handler = logging.StreamHandler()
-
-    formatter = logging.Formatter("%(asctime)s — %(filename)s — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
+    if logger_name is not None:
+        formatter = logging.Formatter("%(asctime)s — " + logger_name + " — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
+    else:
+        formatter = logging.Formatter("%(asctime)s — %(filename)s — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
     file_handler.setFormatter(formatter)
-    root_logger.addHandler(file_handler)
-            
+    logger.addHandler(file_handler)
+    return logger
+
 
 if __name__ == '__main__':
     print("start logging...")

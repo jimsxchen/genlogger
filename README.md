@@ -97,7 +97,8 @@ The set_logger function can be called many times to set up different handlers as
 - The prototype:
 
 ```
-def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50, rotate_num=1, 
+def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_size=1024*1024*50,
+                rotate_num=1, logger_name=None, propogate=True,
                 host="localhost", port="51000", 
                 mailhost=None, fromaddr=None, toaddrs=None, subject=None, 
                 url=None, 
@@ -116,6 +117,8 @@ Where:
     :param max_size: This argument is for rotating logs to specify the maximum log size. In mega byte.
     :param rotate_num: For rotating logs only. It specifies how many backup file needed. The value has to be
                 at least 1 to work with rotation
+    :param logger_name: named logger if provided, otherwise set up the root logger
+    :param propogate: decide whether the logger can propogate to ancestors 
     :param host: For socket, datagram, http types of logger to specify the host name or IP address 
     :param port: For socket, datagram, http types of logger to specify the port number
     :param mailhost: For smtp type to set up the mail server
@@ -124,6 +127,8 @@ Where:
     :param subject: For smtp type to set up the mail subject
     :param url: For http handler to specify the website url
     :param queue: For queue handler to pass a queue object
+
+    return: the configured logger
 ```
 
 
