@@ -10,5 +10,5 @@ setup(
     packages        = ['jlogger'],
     description     = 'Setup the root logger as per the handler type with formatter',
     name            = 'jlogger',
-    version         = '1.1.4',
+    version         = '1.1.6',
 )

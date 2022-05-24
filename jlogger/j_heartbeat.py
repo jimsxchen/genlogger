@@ -56,15 +56,21 @@ class HeartbeatLog:
 
         curr_time = time.time()
         if round(curr_time-self._start_time) >= self._interval_val and logger != None:
-            ori_fmtter = logger.root.handlers[0].formatter
-            new_fmtter = logging.Formatter("%(asctime)s — " + self._name + " — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
-            logger.root.handlers[0].setFormatter(new_fmtter)
+            ori_fmtter = None
+            if len(logger.root.handlers) > 0:
+                new_fmtter = logging.Formatter("%(asctime)s - " + self._name + " - %(funcName)s:%(lineno)d - %(levelname)s - %(message)s")
+                ori_fmtter = logger.root.handlers[0].formatter
+                logger.root.handlers[0].setFormatter(new_fmtter)
+            else:
+                new_fmtter = "%(asctime)s - " + self._name + " - %(funcName)s:%(lineno)d - %(levelname)s - %(message)s"
+                logging.basicConfig(format=new_fmtter)
             if replace and message:
                 logger.info(message)
             elif message: 
                 logger.info(f'Heart beat ----- alive. Logged every {self._interval_val} seconds. {message}')
             else:
                 logger.info(f'Heart beat ----- alive. Logged every {self._interval_val} seconds.')
-            logger.root.handlers[0].setFormatter(ori_fmtter)               
+            if len(logger.root.handlers) > 0:
+                logger.root.handlers[0].setFormatter(ori_fmtter)               
             self._start_time = curr_time
 

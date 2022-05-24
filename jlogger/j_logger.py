@@ -99,9 +99,9 @@ def set_logger(file_name:str, handler:str="rotatingfile", level:str="info", max_
     else:
         file_handler = logging.StreamHandler()
     if logger_name is not None:
-        formatter = logging.Formatter("%(asctime)s — " + logger_name + " — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
+        formatter = logging.Formatter("%(asctime)s - " + logger_name + " - %(funcName)s:%(lineno)d - %(levelname)s - %(message)s")
     else:
-        formatter = logging.Formatter("%(asctime)s — %(filename)s — %(funcName)s:%(lineno)d — %(levelname)s — %(message)s")
+        formatter = logging.Formatter("%(asctime)s - %(filename)s - %(funcName)s:%(lineno)d - %(levelname)s - %(message)s")
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
     return logger
