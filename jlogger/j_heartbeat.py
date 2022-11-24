@@ -55,7 +55,7 @@ class HeartbeatLog:
             self._start_time = time.time()
 
         curr_time = time.time()
-        if round(curr_time-self._start_time) >= self._interval_val and logger != None:
+        if round(abs(curr_time-self._start_time)) >= self._interval_val and logger != None:
             ori_fmtter = None
             if len(logger.root.handlers) > 0:
                 new_fmtter = logging.Formatter("%(asctime)s - " + self._name + " - %(funcName)s:%(lineno)d - %(levelname)s - %(message)s")
